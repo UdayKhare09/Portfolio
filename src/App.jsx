@@ -13,6 +13,7 @@ function App() {
   const lenisRef = useRef(null);
 
   const [isLight, setIsLight] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -110,27 +111,45 @@ function App() {
 
   const scrollToSection = (e, id) => {
     e.preventDefault();
+    setIsMenuOpen(false);
     if (lenisRef.current) {
       lenisRef.current.scrollTo(id);
     }
   };
 
   return (
-    <div className="bg-black text-white min-h-screen font-sans selection:bg-white selection:text-black cursor-none">
+    <div className="bg-black text-white min-h-screen font-sans selection:bg-white selection:text-black md:cursor-none">
       <div
         ref={cursorRef}
-        className={`fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[10000] -translate-x-1/2 -translate-y-1/2 transition-colors duration-300 ${isLight ? 'bg-black mix-blend-normal' : 'bg-white mix-blend-difference'}`}
+        className={`hidden md:block fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[10000] -translate-x-1/2 -translate-y-1/2 transition-colors duration-300 ${isLight ? 'bg-black mix-blend-normal' : 'bg-white mix-blend-difference'}`}
       ></div>
 
       <header className="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-50 mix-blend-difference">
         <div className="text-2xl font-bold tracking-tighter" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>./DEV</div>
+        
+        <button 
+          className="md:hidden text-sm font-medium uppercase tracking-widest hover:opacity-50 transition-opacity"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          {isMenuOpen ? "Close" : "Menu"}
+        </button>
+
         <nav className="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest">
           <a href="#work" onClick={(e) => scrollToSection(e, '#work')} className="hover:opacity-50 transition-opacity" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Work</a>
-          <a href="#experience" onClick={(e) => scrollToSection(e, '#experience')} className="hover:opacity-50 transition-opacity" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Experience</a>
+          {/*<a href="#experience" onClick={(e) => scrollToSection(e, '#experience')} className="hover:opacity-50 transition-opacity" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Experience</a>*/}
           <a href="#about" onClick={(e) => scrollToSection(e, '#about')} className="hover:opacity-50 transition-opacity" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>About</a>
           <a href="#contact" onClick={(e) => scrollToSection(e, '#contact')} className="hover:opacity-50 transition-opacity" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Contact</a>
         </nav>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 bg-black z-40 flex flex-col justify-center items-center gap-8 text-3xl font-bold uppercase tracking-widest">
+          <a href="#work" onClick={(e) => scrollToSection(e, '#work')} className="hover:text-neutral-500 transition-colors">Work</a>
+          <a href="#about" onClick={(e) => scrollToSection(e, '#about')} className="hover:text-neutral-500 transition-colors">About</a>
+          <a href="#contact" onClick={(e) => scrollToSection(e, '#contact')} className="hover:text-neutral-500 transition-colors">Contact</a>
+        </div>
+      )}
 
       <main>
         <section ref={heroRef} className="h-screen flex flex-col justify-center px-6 md:px-20 pt-20">
@@ -144,13 +163,13 @@ function App() {
           </p>
         </section>
 
-        <section id="work" ref={workRef} className="min-h-screen px-6 md:px-20 py-20">
-          <h2 className="text-4xl md:text-6xl font-bold mb-20 tracking-tighter">Selected Projects</h2>
-          <div className="grid gap-20">
+        <section id="work" ref={workRef} className="min-h-screen px-6 md:px-20 py-10 md:py-20">
+          <h2 className="text-4xl md:text-6xl font-bold mb-10 md:mb-20 tracking-tighter">Projects</h2>
+          <div className="grid gap-10 md:gap-20">
             {[
-              { id: 1, title: "Microservices Orchestrator", desc: "Spring Boot / Kafka / Docker" },
-              { id: 2, title: "AI Inference Engine", desc: "Spring AI / Python Bridge / Redis" },
-              { id: 3, title: "High-Scale Payment Gateway", desc: "Java / Hibernate / PostgreSQL" }
+              { id: 1, title: "Career Development Cell Portal for AITR", desc: "Spring Boot / React / PostgreSQL / MiniIO(S3)" },
+              { id: 2, title: "OmniNet", desc: "Spring Boot / Python / PostgreSQL / MiniIO(S3) / Ollama / RabbitMQ" },
+              { id: 3, title: "Project EXO", desc: "Plain Java" }
             ].map((item) => (
               <div
                 key={item.id}
@@ -159,7 +178,7 @@ function App() {
                 onMouseLeave={handleMouseLeave}
               >
                 <div className="aspect-video bg-neutral-900 rounded-lg mb-6 overflow-hidden relative border border-white/10">
-                  <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-900 group-hover:scale-105 transition-transform duration-700 ease-out"></div>
+                  <div className="absolute inset-0 bg-linear-to-br from-neutral-800 to-neutral-900 group-hover:scale-105 transition-transform duration-700 ease-out"></div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="font-mono text-green-500 text-sm opacity-50 group-hover:opacity-100 transition-opacity">
                       &lt;SystemStatus: ONLINE /&gt;
@@ -179,8 +198,7 @@ function App() {
             ))}
           </div>
         </section>
-
-        <section id="experience" className="min-h-[50vh] px-6 md:px-20 py-20 bg-neutral-900/50">
+        {/* <section id="experience" className="min-h-[50vh] px-6 md:px-20 py-20 bg-neutral-900/50">
           <h2 className="text-4xl md:text-6xl font-bold mb-20 tracking-tighter">Experience</h2>
           <div className="space-y-12">
             {[
@@ -198,11 +216,10 @@ function App() {
               </div>
             ))}
           </div>
-        </section>
-
-        <section id="about" className="min-h-screen px-6 md:px-20 py-20 flex flex-col justify-center">
+        </section> */}
+        <section id="about" className="min-h-screen px-6 md:px-20 py-10 md:py-20 flex flex-col justify-center">
           <h2 className="text-4xl md:text-6xl font-bold mb-10 tracking-tighter">About Me</h2>
-          <div className="grid md:grid-cols-2 gap-20">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-20">
             <div className="text-2xl md:text-4xl leading-tight font-medium">
               <p className="mb-10">
                 I'm a backend specialist focused on building resilient, high-throughput systems.
@@ -237,7 +254,7 @@ function App() {
 
         <section
           id="contact"
-          className="min-h-[50vh] px-6 md:px-20 py-20 bg-white text-black flex flex-col justify-between"
+          className="min-h-[50vh] px-6 md:px-20 py-10 md:py-20 bg-white text-black flex flex-col justify-between"
           onMouseEnter={() => setIsLight(true)}
           onMouseLeave={() => setIsLight(false)}
         >
@@ -246,11 +263,11 @@ function App() {
               Let's Connect
             </h2>
           </div>
-          <div className="flex flex-col md:flex-row justify-between items-end gap-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
             <a href="mailto:udaykhare77@gmail.com" className="text-2xl md:text-4xl underline decoration-2 underline-offset-4 hover:opacity-70 transition-opacity" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               udaykhare77@gmail.com
             </a>
-            <div className="flex gap-6 text-sm font-medium uppercase tracking-widest">
+            <div className="flex flex-wrap gap-6 text-sm font-medium uppercase tracking-widest">
               <a href="https://www.linkedin.com/in/uday-khare-a09208289" className="hover:opacity-50" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>LinkedIn</a>
               <a href="https://github.com/udaykhare09" className="hover:opacity-50" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>GitHub</a>
               <a href="https://x.com/uday_khare09" className="hover:opacity-50" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>X/Twitter</a>

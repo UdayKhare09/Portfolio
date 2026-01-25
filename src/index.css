@@ -1,13 +1,15 @@
 @import "tailwindcss";
 
-body {
-  cursor: none;
-}
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
 
-a,
-button,
-.cursor-pointer {
-  cursor: none;
+  a,
+  button,
+  .cursor-pointer {
+    cursor: none;
+  }
 }
 
 /* Custom Scrollbar */
