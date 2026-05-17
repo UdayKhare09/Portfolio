@@ -136,7 +136,7 @@ function App() {
 
         <nav className="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest">
           <a href="#work" onClick={(e) => scrollToSection(e, '#work')} className="hover:opacity-50 transition-opacity" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Work</a>
-          {/*<a href="#experience" onClick={(e) => scrollToSection(e, '#experience')} className="hover:opacity-50 transition-opacity" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Experience</a>*/}
+          <a href="#experience" onClick={(e) => scrollToSection(e, '#experience')} className="hover:opacity-50 transition-opacity" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Experience</a>
           <a href="#about" onClick={(e) => scrollToSection(e, '#about')} className="hover:opacity-50 transition-opacity" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>About</a>
           <a href="#contact" onClick={(e) => scrollToSection(e, '#contact')} className="hover:opacity-50 transition-opacity" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Contact</a>
         </nav>
@@ -146,6 +146,7 @@ function App() {
       {isMenuOpen && (
         <div className="fixed inset-0 bg-black z-40 flex flex-col justify-center items-center gap-8 text-3xl font-bold uppercase tracking-widest">
           <a href="#work" onClick={(e) => scrollToSection(e, '#work')} className="hover:text-neutral-500 transition-colors">Work</a>
+          <a href="#experience" onClick={(e) => scrollToSection(e, '#experience')} className="hover:text-neutral-500 transition-colors">Experience</a>
           <a href="#about" onClick={(e) => scrollToSection(e, '#about')} className="hover:text-neutral-500 transition-colors">About</a>
           <a href="#contact" onClick={(e) => scrollToSection(e, '#contact')} className="hover:text-neutral-500 transition-colors">Contact</a>
         </div>
@@ -167,56 +168,72 @@ function App() {
           <h2 className="text-4xl md:text-6xl font-bold mb-10 md:mb-20 tracking-tighter">Projects</h2>
           <div className="grid gap-10 md:gap-20">
             {[
-              { id: 1, title: "Career Development Cell Portal for AITR", desc: "Spring Boot / React / PostgreSQL / MiniIO(S3)" },
-              { id: 2, title: "OmniNet", desc: "Spring Boot / Python / PostgreSQL / MiniIO(S3) / Ollama / RabbitMQ" },
-              { id: 3, title: "Project EXO", desc: "Plain Java" }
+              { id: 1, title: "Career Development Cell Portal for AITR", desc: "Spring Boot / React / PostgreSQL / MiniIO(S3)", url: "https://cdc.acropolis.teamzemo.tech" },
+              { id: 2, title: "OmniNet", desc: "Spring Boot / Python / PostgreSQL / MiniIO(S3) / Ollama / RabbitMQ", url: "https://github.com/Team-Zemo/omninet-core" },
+              { id: 3, title: "Project EXO", desc: "Plain Java", url: "https://github.com/UdayKhare09/ProjectEXO" }
             ].map((item) => (
-              <div
+              <a
                 key={item.id}
-                className="project-item group cursor-pointer"
+                href={item.url || '#'}
+                target={item.url ? '_blank' : '_self'}
+                rel="noopener noreferrer"
+                className="project-item group flex items-center justify-between border-t border-white/10 py-6 hover:border-white/40 transition-colors duration-300"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                aria-label={`Visit ${item.title}`}
               >
-                <div className="aspect-video bg-neutral-900 rounded-lg mb-6 overflow-hidden relative border border-white/10">
-                  <div className="absolute inset-0 bg-linear-to-br from-neutral-800 to-neutral-900 group-hover:scale-105 transition-transform duration-700 ease-out"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="font-mono text-green-500 text-sm opacity-50 group-hover:opacity-100 transition-opacity">
-                      &lt;SystemStatus: ONLINE /&gt;
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-between items-start">
+                <div className="flex items-baseline gap-6">
+                  <span className="font-mono text-neutral-600 text-sm w-6 shrink-0">0{item.id}</span>
                   <div>
-                    <h3 className="text-3xl font-bold mb-2">{item.title}</h3>
-                    <p className="text-neutral-400">{item.desc}</p>
-                  </div>
-                  <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
-                    ↗
+                    <h3 className="text-xl md:text-2xl font-bold group-hover:opacity-70 transition-opacity">{item.title}</h3>
+                    <p className="text-neutral-500 text-sm mt-1 font-mono">{item.desc}</p>
                   </div>
                 </div>
-              </div>
+                <div className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-black transition-colors ml-6">
+                  ↗
+                </div>
+              </a>
             ))}
           </div>
         </section>
-        {/* <section id="experience" className="min-h-[50vh] px-6 md:px-20 py-20 bg-neutral-900/50">
-          <h2 className="text-4xl md:text-6xl font-bold mb-20 tracking-tighter">Experience</h2>
-          <div className="space-y-12">
+        <section id="experience" className="min-h-[50vh] px-6 md:px-20 py-10 md:py-20">
+          <h2 className="text-4xl md:text-6xl font-bold mb-10 md:mb-20 tracking-tighter">Experience</h2>
+          <div className="space-y-0">
             {[
-              { role: "Senior Backend Engineer", company: "Tech Corp", period: "2023 - Present", desc: "Leading the migration to microservices architecture using Spring Boot and Kubernetes." },
-              { role: "Backend Developer", company: "Startup Inc", period: "2021 - 2023", desc: "Developed high-performance APIs and integrated AI models using Spring AI." },
-              { role: "Java Developer", company: "Legacy Systems", period: "2019 - 2021", desc: "Maintained and optimized legacy Java applications and Hibernate mappings." }
+              {
+                role: "Research Intern",
+                company: "CAIR-DRDO",
+                companyFull: "Centre for Artificial Intelligence and Robotics — Defence Research and Development Organisation",
+                period: "Mar 2026 – Present",
+                badge: "Active",
+                desc: "Working under the mentorship of a Scientist 'F' on defence-grade AI research. Winner of the NIGHUD Web Discovery Contest at IIT Indore × DRDO."
+              },
+              {
+                role: "Co-founder & Backend Engineer",
+                company: "Team Zemo",
+                companyFull: "teamzemo.tech",
+                period: "2024 – Present",
+                badge: "Active",
+                desc: "Building AI infrastructure, security tooling, and full-stack platforms. Projects include the AITR CDC Portal, OmniNet, and internal DevOps pipelines."
+              }
             ].map((exp, i) => (
-              <div key={i} className="border-t border-white/10 pt-8 flex flex-col md:flex-row md:items-start gap-4 md:gap-20" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                <div className="md:w-1/4 text-neutral-500 font-mono text-sm">{exp.period}</div>
-                <div className="md:w-3/4">
-                  <h3 className="text-2xl font-bold mb-2">{exp.role}</h3>
-                  <div className="text-lg text-neutral-300 mb-4">{exp.company}</div>
+              <div key={i} className="border-t border-white/10 pt-8 pb-8 flex flex-col md:flex-row md:items-start gap-4 md:gap-20" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                <div className="md:w-1/3">
+                  <div className="text-neutral-500 font-mono text-sm mb-2">{exp.period}</div>
+                  {exp.badge && (
+                    <span className="inline-block px-2 py-0.5 text-xs font-mono border border-green-500/40 text-green-400 rounded-full">{exp.badge}</span>
+                  )}
+                </div>
+                <div className="md:w-2/3">
+                  <h3 className="text-2xl font-bold mb-1">{exp.role}</h3>
+                  <div className="text-base text-neutral-300 mb-1 font-semibold">{exp.company}</div>
+                  <div className="text-sm text-neutral-500 font-mono mb-4">{exp.companyFull}</div>
                   <p className="text-neutral-400 max-w-xl">{exp.desc}</p>
                 </div>
               </div>
             ))}
           </div>
-        </section> */}
+        </section>
         <section id="about" className="min-h-screen px-6 md:px-20 py-10 md:py-20 flex flex-col justify-center">
           <h2 className="text-4xl md:text-6xl font-bold mb-10 tracking-tighter">About Me</h2>
           <div className="grid md:grid-cols-2 gap-10 md:gap-20">
